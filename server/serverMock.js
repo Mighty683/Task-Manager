@@ -12,23 +12,23 @@ var today = new Date();
 const initialState = [
     {
         id: 1,
-        name: "Wpierdol",
-        desc: "Jakiś lamus rzuca się pod prelekcyjna",
-        where: "Prelekcyjna",
+        name: "Task 1",
+        desc: "Description",
+        where: "Place",
         when: new Date(today.getTime() - 1000000)
     },
     {
         id: 2,
-        name: "Wyjebało kibel",
-        desc: "wzią mopa i posprząta",
-        where: "Kibek",
+        name: "Task 2",
+        desc: "Description",
+        where: "Place",
         when: undefined
     },
     {
         id: 3,
-        name: "Zepsuty laptop",
-        desc: "coś z kablem hdmi",
-        where: "prelekcyjna 2",
+        name: "Task 3",
+        desc: "Description",
+        where: "Place",
         when: new Date(today.getTime() + 1000000)
     }
 ];
