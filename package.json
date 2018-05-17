@@ -34,6 +34,7 @@
     "express": "^4.16.2",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
+    "mongodb": "^3.1.0-beta4",
     "node-sass": "^4.9.0",
     "path": "^0.12.7",
     "react-router": "^4.2.0",

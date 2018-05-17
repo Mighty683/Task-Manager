@@ -2,17 +2,12 @@ const MongoClient = require('mongodb').MongoClient
 const util = require('util')
 const EventEmitter = require('events').EventEmitter
 
-function DBController (options) {
-  this.config = options
+function DBController () {
   this.connectDB = function () {
-    MongoClient.connect(this.config.url, {
-      auth: {
-        user: this.config.user,
-        password: this.config.password
-      }}, (err, client) => {
+    MongoClient.connect('mongodb://127.0.0.1:27017', (err, client) => {
       if (!err) {
         this.emit('db:connected', client)
-        console.log(`DB connection: ${this.config.url}`)
+        console.log(`DB connection: ${'mongodb://127.0.0.1:27017'}`)
       } else {
         console.log(err)
       }
@@ -24,12 +19,12 @@ function DBController (options) {
       if (!err) {
         if (doc) {
           console.log(`DB:${name}:doc:exists`)
-          this.emit(`DB:${name}:doc:created`, doc, collection.find(query))
+          this.emit(`DB:${name}:doc:created`, collection.find(query))
         } else {
           console.log(`DB:${name}:doc:created`)
           collection.insertOne(data, (err, doc) => {
             if (!err) {
-              this.emit(`DB:${name}:doc:created`, doc.ops[0], collection.find(query))
+              this.emit(`DB:${name}:doc:created`, collection.find(query))
             }
           })
         }

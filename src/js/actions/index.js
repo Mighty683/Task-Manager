@@ -34,13 +34,13 @@ export const addTask = (data) => {
   return (dispatch) => {
     return request({
       method: 'POST',
-      uri: 'http://localhost:8000',
+      uri: 'http://localhost:8000/add',
       body: {
         data
       }
     }).then(
-      (res) => {
-        return { type: 'ADD_TASK' }
+      (tasks) => {
+        dispatch(loadTasksSuccess(tasks))
       })
   }
 }

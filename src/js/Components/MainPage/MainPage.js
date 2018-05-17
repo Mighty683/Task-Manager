@@ -1,39 +1,61 @@
-import React from 'react'
-import TaskList from '../TaskList/TaskList'
-import Menu from './Menu'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import * as TaskActions from '../../actions'
+import React, { Component } from 'react'
+import { Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
+import { Route, Switch } from 'react-router-dom'
+import { withRouter } from 'react-router'
+import TaskListMainPage from '../TaskList/MainPage.js'
+import Welcome from './Welcome.js'
+import NavBar from './NavBar.js'
 
-class MainPage extends React.Component {
+class MainPage extends Component {
   constructor (props) {
-    super(props)
-    this.state = props
+    super()
+    this.state = {
+      ...props
+    }
+    this.handleContinue = this.handleContinue.bind(this)
+    this.handleDataChange = this.handleDataChange.bind(this)
   }
 
-  componentDidMount () {
-    this.state.actions.loadTasks()
+  handleContinue () {
+    this.props.history.push('/tasks')
+  }
+
+  handleDataChange (preparedData) {
+    this.setState({
+      ...preparedData
+    })
+    this.props.history.push('/adminpanel')
   }
 
   render () {
-    const isListPresent = this.props.tasks instanceof Object
     return (
-      <div className='main-page mh-s'>
-        <Menu {...this.props.actions} />
-        {
-          isListPresent ? <TaskList {...this.props} /> : null
-        }
-      </div>
-    )
+      <AlertProvider template={AlertTemplate} {... {
+        position: 'bottom center',
+        timeout: 3000,
+        transtition: 'scale',
+        offset: '30px'
+      }}>
+        <div className='main container text-center'>
+          <header>
+            <h1>Task-Manager</h1>
+            <NavBar />
+          </header>
+          <Switch>
+            <Route exact path='/' render={() => (
+              <Welcome handleContinue={this.handleContinue} />
+            )} />
+            <Route path='/tasks' render={() => (
+              <TaskListMainPage {...this.state} />
+            )} />
+            <Route path='/adminpanel' render={() => (
+              <div>TO DO</div>
+            )} />
+          </Switch>
+          <footer className='text-muted'>Made by Tomasz Szarek 2018</footer>
+        </div>
+      </AlertProvider>)
   }
 }
-const mapStateToProps = state => ({...state.actions})
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(TaskActions, dispatch)
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainPage)
+export default withRouter(MainPage)

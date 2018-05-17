@@ -1,16 +1,10 @@
-const express = require('express')
-const app = express()
-var bodyParser = require('body-parser')
-app.use(bodyParser.json())
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
-  next()
-})
-var today = new Date()
+const DbConstroller = require('./dbController.js')
+const ServerInitializer = require('./ServerInitializer.js')
 
-var initialState = [
-  {
+var today = new Date()
+var initialState = {
+  user: 'admin',
+  tasks: [{
     id: 1,
     name: 'Task 1',
     desc: 'Description',
@@ -34,22 +28,16 @@ var initialState = [
     done: false,
     when: new Date(today.getTime() + 1000000)
   }
-]
+  ]}
+let dbController = new DbConstroller()
 
-app.post('/edit', function (req, res) {
-  console.log(`edit:${req.body}`)
-  let item = initialState.find(
-    (task) => task.id === req.body.id)
-  item = req.body
-  res.send({
-    task: item
+dbController.on('db:connected', (client) => {
+  dbController.on('collection:set', (collection) => {
+    dbController.on(`DB:${initialState.user}:doc:created`, function (docConnection) {
+      ServerInitializer(client.db('taskManager'))
+    })
+    dbController.checkAndCreateDoc(collection, initialState, { user: initialState.user }, initialState.user)
   })
+  dbController.createCollection(client.db('taskManager'), 'usersTasks')
 })
-
-app.get('/get/all', function (req, res) {
-  res.send(initialState)
-})
-
-app.listen(8000, function () {
-  console.log('Listening 8000 port')
-})
+dbController.connectDB()
