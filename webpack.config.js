@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
@@ -38,7 +39,7 @@ module.exports = {
     net: 'empty',
     tls: 'empty'
   },
-  plugins: [htmlPlugin],
+  plugins: [htmlPlugin, new BundleAnalyzerPlugin()],
   devServer: {
     contentBase: path.resolve('build'),
     hot: true
