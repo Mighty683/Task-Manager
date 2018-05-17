@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from 'reactstrap'
 export default class Menu extends React.Component {
   constructor (props) {
     super(props)
@@ -22,8 +23,8 @@ export default class Menu extends React.Component {
       <div class='header-section text-center'>
         <h1 class='bg-teal mt-s page-header'>Task List</h1>
         <div class='btn-group mv-xxxs'>
-          <div class='btn btn-primary' onClick={this.handleAdd}>Add Task</div>
-          <div class='btn btn-primary' onClick={this.handleUpdate}>Update List</div>
+          <Button color="primary" onClick={this.handleAdd}>Add Task</Button>
+          <Button color="primary" onClick={this.handleUpdate}>Update List</Button>
         </div>
       </div>
     )

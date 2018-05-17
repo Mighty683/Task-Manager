@@ -1,4 +1,5 @@
 import React from 'react'
+import { Col } from 'reactstrap'
 export default class TaskRow extends React.Component {
   constructor (props) {
     super(props)
@@ -32,10 +33,10 @@ export default class TaskRow extends React.Component {
   render () {
     return (
       <div class={this.getClass()}>
-        <div class='col-2'>{this.prepareFieldObj(this.state.name)}</div>
-        <div class='col-5'>{this.prepareFieldObj(this.state.desc)}</div>
-        <div class='col-2'>{this.prepareFieldObj(this.state.where)}</div>
-        <div class='col-3'>{this.prepareFieldObj(this.state.when)}</div>
+        <Col xs='2'>{this.prepareFieldObj(this.state.name)}</Col>
+        <Col xs='5'>{this.prepareFieldObj(this.state.desc)}</Col>
+        <Col xs='2'>{this.prepareFieldObj(this.state.where)}</Col>
+        <Col xs='3'>{this.prepareFieldObj(this.state.when)}</Col>
       </div>
     )
   }

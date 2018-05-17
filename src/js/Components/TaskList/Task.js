@@ -1,6 +1,7 @@
 import React from 'react'
 import TaskRow from './TaskRow'
 import TaskEdit from './TaskEdit'
+import { Col } from 'reactstrap'
 export default class Task extends React.Component {
   constructor (props) {
     super(props)
@@ -10,7 +11,7 @@ export default class Task extends React.Component {
   render () {
     let isEditMode = this.state.data.isEditMode
     return (
-      <div class='col-12 bordered' onClick={(e) => {
+      <Col xs='12 bordered' onClick={(e) => {
         if (!isEditMode) {
           let data = this.state.data
           data.isEditMode = !data.isEditMode
@@ -22,7 +23,7 @@ export default class Task extends React.Component {
             ? <TaskEdit {...this.state} />
             : <TaskRow {...this.state.data} />
         }
-      </div>
+      </Col>
     )
   }
 }
