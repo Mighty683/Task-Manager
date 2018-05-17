@@ -1,29 +1,20 @@
 import React from 'react'
 import TaskRow from './TaskRow'
 import TaskEdit from './TaskEdit'
-import { Col } from 'reactstrap'
 export default class Task extends React.Component {
   constructor (props) {
     super(props)
+    this.onClick = this.onClick.bind(this)
     this.state = Object.assign({}, props)
   }
 
-  render () {
-    let isEditMode = this.state.data.isEditMode
-    return (
-      <Col xs='12 bordered' onClick={(e) => {
-        if (!isEditMode) {
-          let data = this.state.data
-          data.isEditMode = !data.isEditMode
-          this.setState({data: data})
-        }
-      }}>
-        {
-          isEditMode
-            ? <TaskEdit {...this.state} />
-            : <TaskRow {...this.state.data} />
-        }
-      </Col>
-    )
+  onClick (e) {
+    if (!this.state.data.isEditMode) {
+      let data = this.state.data
+      data.isEditMode = !data.isEditMode
+      this.setState({data: data})
+    }
   }
+
+  render () { return (this.state.data.isEditMode ? <TaskEdit {...{...this.state, onClick: this.onClick}} /> : <TaskRow {...{...this.state.data, onClick: this.onClick}} />) }
 }
