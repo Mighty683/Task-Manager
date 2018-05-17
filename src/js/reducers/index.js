@@ -3,6 +3,6 @@ import actions from './Actions'
 
 const rootReducer = combineReducers({
   actions
-});
+})
 
-export default rootReducer;
+export default rootReducer
