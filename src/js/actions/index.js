@@ -48,6 +48,7 @@ export function loadTasks () {
   return (dispatch) => {
     return request.get('http://localhost:8000/get/all').then(
       (res) => {
+        console.log(res)
         let tasks = JSON.parse(res)
         dispatch(loadTasksSuccess(tasks))
       })
