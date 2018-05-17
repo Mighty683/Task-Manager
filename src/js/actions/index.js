@@ -34,13 +34,13 @@ export const addTask = (data) => {
   return (dispatch) => {
     return request({
       method: 'POST',
-      uri: 'http://localhost:8000',
+      uri: 'http://localhost:8000/add',
       body: {
         data
       }
     }).then(
-      (res) => {
-        return { type: 'ADD_TASK' }
+      (tasks) => {
+        dispatch(loadTasksSuccess(tasks))
       })
   }
 }
@@ -48,7 +48,6 @@ export function loadTasks () {
   return (dispatch) => {
     return request.get('http://localhost:8000/get/all').then(
       (res) => {
-        console.log(res)
         let tasks = JSON.parse(res)
         dispatch(loadTasksSuccess(tasks))
       })

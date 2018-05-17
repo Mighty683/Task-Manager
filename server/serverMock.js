@@ -34,7 +34,7 @@ let dbController = new DbConstroller()
 dbController.on('db:connected', (client) => {
   dbController.on('collection:set', (collection) => {
     dbController.on(`DB:${initialState.user}:doc:created`, function (docConnection) {
-      ServerInitializer(docConnection)
+      ServerInitializer(client.db('taskManager'))
     })
     dbController.checkAndCreateDoc(collection, initialState, { user: initialState.user }, initialState.user)
   })
