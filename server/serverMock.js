@@ -34,7 +34,6 @@ const initialState = [
 ]
 
 app.get('/get/all', function (req, res) {
-  console.log('dupa')
   res.send(initialState)
 })
 

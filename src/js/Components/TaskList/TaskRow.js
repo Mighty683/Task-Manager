@@ -1,25 +1,6 @@
 import React from 'react'
-import { Col } from 'reactstrap'
-export default class TaskRow extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {}
-    Object.assign(this.state, props)
-  }
-
-  getClass () {
-    let today = new Date()
-    let elClass = 'row '
-    if (!this.state.when) {
-      return elClass + 'bg-gray'
-    } else if (this.props.when && this.props.when.getTime() < today.getTime()) {
-      return elClass + 'bg-red'
-    } else {
-      return elClass + 'bg-green'
-    }
-  }
-
-  prepareFieldObj (value) {
+const TaskRow = (props) => {
+  function prepareFieldObj (value) {
     if (value) {
       if (value instanceof Date) {
         return value.toUTCString()
@@ -30,14 +11,23 @@ export default class TaskRow extends React.Component {
     }
   }
 
-  render () {
-    return (
-      <div class={this.getClass()}>
-        <Col xs='2'>{this.prepareFieldObj(this.state.name)}</Col>
-        <Col xs='5'>{this.prepareFieldObj(this.state.desc)}</Col>
-        <Col xs='2'>{this.prepareFieldObj(this.state.where)}</Col>
-        <Col xs='3'>{this.prepareFieldObj(this.state.when)}</Col>
-      </div>
-    )
+  function getClass () {
+    let today = new Date()
+    if (!props.when) {
+      return 'table-info'
+    } else if ((props.when && props.when.getTime() < today.getTime() && props.canc) {
+      return 'table-danger'
+    } else {
+      return 'table-success'
+    }
   }
+
+  return (
+    <tr className={getClass()} onClick={props.onClick}>
+      <td>{prepareFieldObj(props.name)}</td>
+      <td>{prepareFieldObj(props.desc)}</td>
+      <td>{prepareFieldObj(props.where)}</td>
+      <td>{prepareFieldObj(props.when)}</td>
+    </tr>)
 }
+export default TaskRow

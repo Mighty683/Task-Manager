@@ -15,7 +15,6 @@ export default class TaskEdit extends React.Component {
 
   handleChange (e) {
     e.preventDefault()
-    let newState = this.state
     let value = e.target.id === 'when' ? new Date(e.target.value) : e.target.value
     this.setState({data: Object.assign(this.state.data, {[e.target.id]: value})})
   }

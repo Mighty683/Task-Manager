@@ -23,8 +23,8 @@ export default class Menu extends React.Component {
       <div class='header-section text-center'>
         <h1 class='bg-teal mt-s page-header'>Task List</h1>
         <div class='btn-group mv-xxxs'>
-          <Button color="primary" onClick={this.handleAdd}>Add Task</Button>
-          <Button color="primary" onClick={this.handleUpdate}>Update List</Button>
+          <Button color='primary' onClick={this.handleAdd}>Add Task</Button>
+          <Button color='primary' onClick={this.handleUpdate}>Update List</Button>
         </div>
       </div>
     )
