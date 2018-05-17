@@ -5,16 +5,23 @@ export default class Task extends React.Component {
   constructor (props) {
     super(props)
     this.onClick = this.onClick.bind(this)
-    this.state = Object.assign({}, props)
-  }
-
-  onClick (e) {
-    if (!this.state.data.isEditMode) {
-      let data = this.state.data
-      data.isEditMode = !data.isEditMode
-      this.setState({data: data})
+    this.onEdit = this.onEdit.bind(this)
+    this.state = {
+      isEditMode: false,
+      data: props.data,
+      actions: props.actions
     }
   }
 
-  render () { return (this.state.data.isEditMode ? <TaskEdit {...{...this.state, onClick: this.onClick}} /> : <TaskRow {...{...this.state.data, onClick: this.onClick}} />) }
+  onEdit (data) {
+    this.state.actions.editTask(data)
+    this.onClick()
+  }
+
+  onClick (e) {
+    this.setState((prevState) => ({
+      isEditMode: !prevState.isEditMode
+    }))
+  }
+  render () { return (this.state.isEditMode ? <TaskEdit {...{...this.state, onEditCancel: this.onClick, onEdit: this.onEdit}} /> : <TaskRow {...{...this.state.data, onClick: this.onClick}} />) }
 }

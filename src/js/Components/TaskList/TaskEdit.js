@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 export default class TaskEdit extends React.Component {
   constructor (props) {
     super(props)
@@ -15,48 +15,60 @@ export default class TaskEdit extends React.Component {
 
   handleChange (e) {
     e.preventDefault()
-    let value = e.target.id === 'when' ? new Date(e.target.value) : e.target.value
-    this.setState({data: Object.assign(this.state.data, {[e.target.id]: value})})
+    let id = e.target.id
+    let value
+    if (id === 'when') {
+      value = new Date(e.target.value)
+    } else if (id === 'done') {
+      value = e.target.checked
+    } else {
+      value = e.target.value
+    }
+    this.setState((prevState) => {
+      console.log(value)
+      prevState.data[id] = value
+      return prevState
+    })
   }
 
   handleSubmit (e) {
     e.preventDefault()
-    this.state.actions.editTask(this.state.data.id, this.state.data)
+    console.log(this.state.data)
+    this.state.onEdit(this.state.data)
   }
 
   handleCancel (e) {
     e.preventDefault()
-    this.state.actions.cancelTaskEdit(this.state.data.id)
+    this.state.onEditCancel(this.state.data.id)
   }
 
   render () {
     return (
-      <form onSubmit={this.handleSubmit} class='row form-group bg-silver ma-xxs'>
-        <Col xs='6'>
-          <label for='name'>Name:</label>
-          <input onChange={this.handleChange} id='name' type='text' class='form-control' placeHolder={this.prepareFieldObj(this.state.data.name)} />
-        </Col>
-        <Col xs='12'>
-          <label for='desc'>Description:</label>
-          <input onChange={this.handleChange} id='desc' type='text' class='form-control' placeHolder={this.prepareFieldObj(this.state.data.desc)} />
-        </Col>
-        <Col xs='6'>
-          <label for='where'>Where:</label>
-          <input onChange={this.handleChange} id='where' type='text' class='form-control' placeHolder={this.prepareFieldObj(this.state.data.where)} />
-        </Col>
-        <Col xs='2'>
-          <label for='returned'>Canceled?</label>
-          <input onChange={this.handleChange} id='returned' type='checkbox' class='form-control-check ml-xs' />
-        </Col>
-        <Col xs='6'>
-          <label for='when'>When:</label>
-          <input onChange={this.handleChange} id='when' type='datetime-local' class='form-control' placeHolder={this.prepareFieldObj(this.state.data.when)} />
-        </Col>
-        <Col xs='12 mv-xxxs text-center'>
-          <button id='submit' type='submit' class='btn btn-primary'>Submit</button>
-          <button id='cancel' onClick={this.handleCancel} class='ml-xxxs bg-red black border--red btn btn-primary'>Cancel Edit</button>
-        </Col>
-      </form>
+      <tr>
+        <td>
+          <Form onSubmit={this.handleSubmit}>
+            <FormGroup>
+              <Label for='name'>Name:</Label>
+              <Input onChange={this.handleChange} id='name' type='text' placeholder={this.prepareFieldObj(this.state.data.name)} />
+
+              <Label for='desc'>Description:</Label>
+              <Input onChange={this.handleChange} id='desc' type='text' placeholder={this.prepareFieldObj(this.state.data.desc)} />
+
+              <Label for='where'>Where:</Label>
+              <Input onChange={this.handleChange} id='where' type='text' placeholder={this.prepareFieldObj(this.state.data.where)} />
+
+              <FormGroup check>
+                <Label for='done'><Input key={this.state.data.done} onClick={this.handleChange} defaultChecked={this.state.data.done} id='done' type='checkbox' /> Done?</Label>
+              </FormGroup>
+              <Label for='when'>When:</Label>
+              <Input onChange={this.handleChange} id='when' type='datetime-local' placeholder={this.prepareFieldObj(this.state.data.when)} />
+
+              <Button id='submit' type='submit'>Submit</Button>
+              <Button id='cancel' onClick={this.handleCancel}>Cancel Edit</Button>
+            </FormGroup>
+          </Form>
+        </td>
+      </tr>
     )
   }
 }

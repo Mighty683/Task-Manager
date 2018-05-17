@@ -18,7 +18,7 @@ class MainPage extends React.Component {
   render () {
     const isListPresent = this.props.tasks instanceof Object
     return (
-      <div class='main-page mh-s'>
+      <div className='main-page mh-s'>
         <Menu {...this.props.actions} />
         {
           isListPresent ? <TaskList {...this.props} /> : null

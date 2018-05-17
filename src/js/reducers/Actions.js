@@ -3,20 +3,9 @@ export default function todos (state = {}, action) {
     case 'EDIT_TASK':
       return {
         tasks: state.tasks.map(function (task) {
-          return task.id === action.id
-            ? Object.defineProperty(action.data, 'isEditMode', {
-              value: false
-            }) : task
+          return task.id === action.task.id
+            ? action.task : task
         })}
-    case 'CANCEL_EDIT':
-      return {
-        tasks: state.tasks.map(function (task) {
-          return task.id === action.id
-            ? Object.defineProperty(task, 'isEditMode', {
-              value: false
-            }) : task
-        })
-      }
     case 'DELETE_ITEM':
       return state.tasks.filter(task => task.id !== action.id)
     case 'ADD_TASK':

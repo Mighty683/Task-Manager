@@ -3,7 +3,7 @@ import Task from './Task'
 export default class TaskList extends React.Component {
   render () {
     return (
-      <table class='table table-striped'>
+      <table className='table table-striped'>
         <thead>
           <tr>
             <th>Name</th>
@@ -14,7 +14,7 @@ export default class TaskList extends React.Component {
         </thead>
         <tbody>
           {this.props.tasks.map(function (task) {
-            return <Task {... {data: task, actions: this.props.actions}} />
+            return <Task key={task.id} {... {data: task, actions: this.props.actions}} />
           }.bind(this))}
         </tbody>
       </table>

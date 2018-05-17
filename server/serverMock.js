@@ -9,12 +9,13 @@ app.use(function (req, res, next) {
 })
 var today = new Date()
 
-const initialState = [
+var initialState = [
   {
     id: 1,
     name: 'Task 1',
     desc: 'Description',
     where: 'Place',
+    done: true,
     when: new Date(today.getTime() - 1000000)
   },
   {
@@ -22,6 +23,7 @@ const initialState = [
     name: 'Task 2',
     desc: 'Description',
     where: 'Place',
+    done: false,
     when: undefined
   },
   {
@@ -29,9 +31,20 @@ const initialState = [
     name: 'Task 3',
     desc: 'Description',
     where: 'Place',
+    done: false,
     when: new Date(today.getTime() + 1000000)
   }
 ]
+
+app.post('/edit', function (req, res) {
+  console.log(`edit:${req.body}`)
+  let item = initialState.find(
+    (task) => task.id === req.body.id)
+  item = req.body
+  res.send({
+    task: item
+  })
+})
 
 app.get('/get/all', function (req, res) {
   res.send(initialState)

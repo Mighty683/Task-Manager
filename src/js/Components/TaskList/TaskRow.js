@@ -15,7 +15,7 @@ const TaskRow = (props) => {
     let today = new Date()
     if (!props.when) {
       return 'table-info'
-    } else if (props.when && props.when.getTime() < today.getTime() && props.canc) {
+    } else if ((props.when && props.when.getTime() < today.getTime()) && !props.done) {
       return 'table-danger'
     } else {
       return 'table-success'
