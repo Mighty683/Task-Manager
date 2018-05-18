@@ -15,7 +15,8 @@ function ServerController (DBCollection) {
     console.log('ADD:NEW')
     this.updateDoc(function (docContent) {
       let prevTasks = docContent.tasks
-      prevTasks.push({id: prevTasks[prevTasks.length - 1].id + 1, when: new Date()})
+      let id = prevTasks[prevTasks.length - 1] ? prevTasks[prevTasks.length - 1].id + 1 : 0
+      prevTasks.push({id: id, when: new Date()})
       this.DBCollection.update({user: 'admin'}, {
         user: 'admin',
         tasks: prevTasks

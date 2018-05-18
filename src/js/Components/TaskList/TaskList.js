@@ -3,7 +3,7 @@ import Task from './Task'
 export default class TaskList extends React.Component {
   render () {
     return (
-      <table className='table table-striped'>
+      <table className='table'>
         <thead>
           <tr>
             <th>Name</th>
