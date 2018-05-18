@@ -13,9 +13,10 @@ const TaskRow = (props) => {
 
   function getClass () {
     let today = new Date()
+    let when = props.when instanceof Object ? props.when : new Date(props.when).getTime()
     if (!props.when) {
       return 'table-info'
-    } else if ((props.when && props.when.getTime() < today.getTime()) && !props.done) {
+    } else if ((when < today.getTime()) && !props.done) {
       return 'table-danger'
     } else {
       return 'table-success'

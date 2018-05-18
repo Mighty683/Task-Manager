@@ -6,6 +6,7 @@ export default class Task extends React.Component {
     super(props)
     this.onClick = this.onClick.bind(this)
     this.onEdit = this.onEdit.bind(this)
+    this.onDelete = this.onDelete.bind(this)
     this.state = {
       isEditMode: false,
       data: props.data,
@@ -18,10 +19,14 @@ export default class Task extends React.Component {
     this.onClick()
   }
 
+  onDelete (id) {
+    this.state.actions.deleteTask(id)
+  }
+
   onClick (e) {
     this.setState((prevState) => ({
       isEditMode: !prevState.isEditMode
     }))
   }
-  render () { return (this.state.isEditMode ? <TaskEdit {...{...this.state, onEditCancel: this.onClick, onEdit: this.onEdit}} /> : <TaskRow {...{...this.state.data, onClick: this.onClick}} />) }
+  render () { return (this.state.isEditMode ? <TaskEdit {...{...this.state, onDelete: this.onDelete, onEditCancel: this.onClick, onEdit: this.onEdit}} /> : <TaskRow {...{...this.state.data, onClick: this.onClick}} />) }
 }

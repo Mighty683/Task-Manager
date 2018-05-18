@@ -2,8 +2,8 @@ const express = require('express')
 const ServerController = require('./ServerController.js')
 const app = express()
 var bodyParser = require('body-parser')
-function InitializeServer (DBClient) {
-  let serverController = new ServerController(DBClient)
+function InitializeServer (DBCollection) {
+  let serverController = new ServerController(DBCollection)
   app.use(bodyParser.json())
   app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*')
@@ -23,11 +23,11 @@ function InitializeServer (DBClient) {
     serverController.getAll(req, res)
   })
   app.post('/delete', function (req, res) {
-    res.send()
+    serverController.delete(req, res)
   })
 
-  app.listen(8000, function () {
-    console.log('Listening 8000 port')
+  app.listen(15432, function () {
+    console.log('Listening 15432 port')
   })
 }
 

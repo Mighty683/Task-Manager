@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
+import { Form, FormGroup, Label, Input, Button, ButtonGroup } from 'reactstrap'
 export default class TaskEdit extends React.Component {
   constructor (props) {
     super(props)
@@ -7,6 +7,7 @@ export default class TaskEdit extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   prepareFieldObj (value) {
@@ -40,6 +41,11 @@ export default class TaskEdit extends React.Component {
     this.state.onEditCancel(this.state.data.id)
   }
 
+  handleDelete (e) {
+    e.preventDefault()
+    this.state.onDelete(this.state.data.id)
+  }
+
   render () {
     return (
       <tr>
@@ -59,10 +65,11 @@ export default class TaskEdit extends React.Component {
                 <Label for='done'><Input key={this.state.data.done} onClick={this.handleChange} defaultChecked={this.state.data.done} id='done' type='checkbox' /> Done?</Label>
               </FormGroup>
               <Label for='when'>When:</Label>
-              <Input onChange={this.handleChange} id='when' type='datetime-local' placeholder={this.prepareFieldObj(this.state.data.when)} />
-
-              <Button id='submit' type='submit'>Submit</Button>
-              <Button id='cancel' onClick={this.handleCancel}>Cancel Edit</Button>
+              <ButtonGroup>
+                <Button id='submit' color='primary' type='submit'>Submit</Button>
+                <Button id='cancel' color='secondary' onClick={this.handleCancel}>Cancel Edit</Button>
+                <Button id='delete' color='danger' onClick={this.handleDelete}>Delete</Button>
+              </ButtonGroup>
             </FormGroup>
           </Form>
         </td>

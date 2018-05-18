@@ -6,28 +6,27 @@ export const editTask = (data) => {
   return (dispatch) => {
     return request({
       method: 'POST',
-      uri: 'http://localhost:8000/edit',
+      uri: 'http://localhost:15432/edit',
       body: data,
       json: true
     }).then(
       (res) => {
-        res.when = new Date(res.when)
         dispatch(editTaskSuccess(res))
       })
   }
 }
-export const deleteTodo = id => {
+export const deleteTask = id => {
   return (dispatch) => {
     return request({
       method: 'POST',
-      uri: 'http://localhost:8000',
+      uri: 'http://localhost:15432/delete',
       body: {
         id
       },
       json: true
     }).then(
       (res) => {
-        return { type: 'DELETE_TASK', id }
+        dispatch(loadTasksSuccess(res))
       })
   }
 }
@@ -35,7 +34,7 @@ export const addTask = (data) => {
   return (dispatch) => {
     return request({
       method: 'POST',
-      uri: 'http://localhost:8000/add',
+      uri: 'http://localhost:15432/add',
       body: {
         data
       },
@@ -48,7 +47,7 @@ export const addTask = (data) => {
 }
 export function loadTasks () {
   return (dispatch) => {
-    return request.get('http://localhost:8000/get/all').then(
+    return request.get('http://localhost:15432/get/all').then(
       (res) => {
         let tasks = JSON.parse(res)
         dispatch(loadTasksSuccess(tasks))
