@@ -18,6 +18,7 @@
     "request-promise": "^4.2.2"
   },
   "scripts": {
+    "lint": "standard", 
     "mock-server": "node ./server/serverMock.js",
     "build": "node  node_modules/webpack/bin/webpack --progress --profile --config webpack.config.js --mode production",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --hot --inline --progress --profile --config webpack.config.js --mode development"
