@@ -5,10 +5,16 @@ cache:
   - node_modules/
 
 stages:
+  - lint
   - build
-
-test_async:
+test_lint:
+  stage: lint
+  script:
+   - standard
+   
+test_build:
   stage: build
   script:
    - npm install
    - npm run build
+
