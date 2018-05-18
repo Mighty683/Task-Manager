@@ -11,7 +11,7 @@ test_lint:
   stage: lint
   script:
    - npm run lint
-
+   
 test_build:
   stage: build
   script:
