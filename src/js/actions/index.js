@@ -23,7 +23,8 @@ export const deleteTodo = id => {
       uri: 'http://localhost:8000',
       body: {
         id
-      }
+      },
+      json: true
     }).then(
       (res) => {
         return { type: 'DELETE_TASK', id }
@@ -37,10 +38,11 @@ export const addTask = (data) => {
       uri: 'http://localhost:8000/add',
       body: {
         data
-      }
+      },
+      json: true
     }).then(
-      (tasks) => {
-        dispatch(loadTasksSuccess(tasks))
+      (res) => {
+        dispatch(loadTasksSuccess(res))
       })
   }
 }

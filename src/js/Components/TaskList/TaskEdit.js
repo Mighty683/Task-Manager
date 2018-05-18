@@ -25,7 +25,6 @@ export default class TaskEdit extends React.Component {
       value = e.target.value
     }
     this.setState((prevState) => {
-      console.log(value)
       prevState.data[id] = value
       return prevState
     })
@@ -33,7 +32,6 @@ export default class TaskEdit extends React.Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    console.log(this.state.data)
     this.state.onEdit(this.state.data)
   }
 

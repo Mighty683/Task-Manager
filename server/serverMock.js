@@ -1,4 +1,4 @@
-const DbConstroller = require('./dbController.js')
+const DbInitializer = require('./DBInitializer.js')
 const ServerInitializer = require('./ServerInitializer.js')
 
 var today = new Date()
@@ -29,15 +29,9 @@ var initialState = {
     when: new Date(today.getTime() + 1000000)
   }
   ]}
-let dbController = new DbConstroller()
-
-dbController.on('db:connected', (client) => {
-  dbController.on('collection:set', (collection) => {
-    dbController.on(`DB:${initialState.user}:doc:created`, function (docConnection) {
-      ServerInitializer(client.db('taskManager'))
-    })
-    dbController.checkAndCreateDoc(collection, initialState, { user: initialState.user }, initialState.user)
-  })
-  dbController.createCollection(client.db('taskManager'), 'usersTasks')
+let dbInitializer = new DbInitializer()
+dbInitializer.on('db:init', (dbclient) => {
+  console.log('Server Initialization')
+  ServerInitializer(dbclient.db('taskManager'))
 })
-dbController.connectDB()
+dbInitializer.initDB(initialState)

@@ -3,6 +3,18 @@ const util = require('util')
 const EventEmitter = require('events').EventEmitter
 
 function DBController () {
+  this.initDB = function (initialState) {
+    this.on('db:connected', (client) => {
+      this.on('collection:set', (collection) => {
+        this.on(`DB:${initialState.user}:doc:created`, function (docConnection) {
+          this.emit('db:init', client)
+        })
+        this.checkAndCreateDoc(collection, initialState, { user: initialState.user }, initialState.user)
+      })
+      this.createCollection(client.db('taskManager'), 'usersTasks')
+    })
+    this.connectDB()
+  }
   this.connectDB = function () {
     MongoClient.connect('mongodb://127.0.0.1:27017', (err, client) => {
       if (!err) {
@@ -52,10 +64,6 @@ function DBController () {
         console.log(err)
       }
     })
-  }
-
-  this.close = function () {
-    this.client.close()
   }
 }
 
