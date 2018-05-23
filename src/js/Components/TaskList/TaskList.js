@@ -1,9 +1,11 @@
 import React from 'react'
 import Task from './Task'
-export default class TaskList extends React.Component {
-  render () {
-    return (
-      <table className='table'>
+import Error from '../Errors/Error.js'
+const TaskList = (props) => {
+  return (
+    props.errors && props.errors.load
+      ? <Error {...props.errors.load} />
+      : <table className='table'>
         <thead>
           <tr>
             <th>Name</th>
@@ -13,11 +15,12 @@ export default class TaskList extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.tasks.map(function (task) {
-            return <Task key={task.id} {... {data: task, actions: this.props.actions}} />
-          }.bind(this))}
+          {props.tasks.map(function (task) {
+            return <Task key={task.id} {... {data: task, actions: props.actions}} />
+          })}
         </tbody>
       </table>
-    )
-  }
+  )
 }
+
+export default TaskList
