@@ -11,12 +11,7 @@ class TaskListMainPage extends React.Component {
     this.state = props
   }
 
-  componentDidMount () {
-    this.state.actions.loadTasks()
-  }
-
   render () {
-    console.log(this)
     return (
       <div className='main-page mh-s'>
         {
