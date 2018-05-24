@@ -1,7 +1,6 @@
 import React from 'react'
 import TaskRow from './TaskRow'
 import TaskEdit from './TaskEdit'
-import Error from '../Errors/Error'
 export default class Task extends React.Component {
   constructor (props) {
     super(props)
