@@ -4,14 +4,14 @@ import TaskEdit from './TaskEdit'
 export default class Task extends React.Component {
   constructor (props) {
     super(props)
+    this.state = {
+      ...props,
+      isEditMode: false
+    }
     this.onClick = this.onClick.bind(this)
     this.onEdit = this.onEdit.bind(this)
     this.onDelete = this.onDelete.bind(this)
-    this.state = {
-      isEditMode: false,
-      data: props.data,
-      actions: props.actions
-    }
+    this.getElement = this.getElement.bind(this)
   }
 
   onEdit (data) {
@@ -28,5 +28,15 @@ export default class Task extends React.Component {
       isEditMode: !prevState.isEditMode
     }))
   }
-  render () { return (this.state.isEditMode ? <TaskEdit {...{...this.state, onDelete: this.onDelete, onEditCancel: this.onClick, onEdit: this.onEdit}} /> : <TaskRow {...{...this.state.data, onClick: this.onClick}} />) }
+
+  getElement () {
+    if (this.state.isEditMode) {
+      return <TaskEdit {...{...this.state, onDelete: this.onDelete, onEditCancel: this.onClick, onEdit: this.onEdit}} />
+    } else {
+      return <TaskRow {...{...this.state.data, onClick: this.onClick}} />
+    }
+  }
+  render () {
+    return this.getElement()
+  }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import Error from '../Errors/Error.js'
 import { Form,
   FormGroup,
   Label,
@@ -15,13 +16,15 @@ import { Form,
 export default class TaskEdit extends React.Component {
   constructor (props) {
     super(props)
-    this.state = Object.assign({}, props)
+    this.state = {...props}
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.toggleModal = this.toggleModal.bind(this)
     this.state.modal = false
+
+    this.state.error = this.state.errors && this.state.errors[`task_${this.state.data.id}`]
   }
 
   prepareFieldObj (value) {
@@ -67,6 +70,7 @@ export default class TaskEdit extends React.Component {
   }
 
   render () {
+    console.log(this.state)
     return (
       <tr>
         <Modal isOpen={this.state.modal} toggle={this.toggleModal} >
@@ -124,6 +128,7 @@ export default class TaskEdit extends React.Component {
             </FormGroup>
           </Form>
         </td>
+        {this.state.error && <Error {...this.state.error} />}
       </tr>
     )
   }

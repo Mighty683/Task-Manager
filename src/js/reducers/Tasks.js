@@ -1,13 +1,16 @@
-export default function todos (state = {}, action) {
+export default function Tasks (state = {}, action) {
   switch (action.type) {
     case 'EDIT_TASK':
       return {
         tasks: state.tasks.map(function (task) {
           return task.id === action.task.id
             ? action.task : task
-        })}
+        })
+      }
     case 'DELETE_ITEM':
-      return state.tasks.filter(task => task.id !== action.id)
+      return {
+        tasks: state.tasks.filter(task => task.id !== action.id)
+      }
     case 'ADD_TASK':
       let newId = state.tasks.reduce((maxId, task) => Math.max(task.id, maxId), -1) + 1
       return {
