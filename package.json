@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "crypto": "^1.0.1",
+    "minimist": "^1.2.0",
     "prop-types": "^15.6.0",
     "react": "^16.3.2",
     "react-alert": "^4.0.2",
@@ -18,9 +20,10 @@
     "request-promise": "^4.2.2"
   },
   "scripts": {
-    "lint": "standard", 
+    "lint": "standard",
     "server": "node ./server/server.js",
     "build": "node  node_modules/webpack/bin/webpack --progress --profile --config webpack.config.js --mode production",
+    "build:analyze": "node  node_modules/webpack/bin/webpack --progress --profile --config webpack.config.js --mode production --env.analyze",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --hot --inline --progress --profile --config webpack.config.js --mode development"
   },
   "devDependencies": {

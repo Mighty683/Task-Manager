@@ -5,11 +5,21 @@ const EventEmitter = require('events').EventEmitter
 function DBController () {
   this.initDB = function (initialState) {
     this.on('db:connected', (client) => {
-      this.on('collection:set', (collection) => {
-        this.on(`DB:${initialState.user}:doc:created`, function (docConnection) {
+      this.on('collection:users:set', collection => {
+        let defaultUser = {
+          user: 'admin',
+          password: 'admin'
+        }
+        this.on(`DB:user:${defaultUser.user}:doc:created`, function (docConnection) {
           this.emit('db:init', client)
         })
-        this.checkAndCreateDoc(collection, initialState, { user: initialState.user }, initialState.user)
+        this.checkAndCreateDoc(collection, defaultUser, { user: defaultUser.user }, `user:${defaultUser.user}`)
+      })
+      this.on('collection:usersTasks:set', (collection) => {
+        this.on(`DB:taskList:${initialState.user}:doc:created`, function (docConnection) {
+          this.createCollection(client.db('taskManager'), 'users')
+        })
+        this.checkAndCreateDoc(collection, initialState, { user: initialState.user }, `taskList:${initialState.user}`)
       })
       this.createCollection(client.db('taskManager'), 'usersTasks')
     })
@@ -57,7 +67,7 @@ function DBController () {
             }
           })
         } else {
-          this.emit('collection:set', collection)
+          this.emit(`collection:${name}:set`, collection)
           console.log('Collection already exists!')
         }
       } else {

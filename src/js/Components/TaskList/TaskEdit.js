@@ -70,7 +70,6 @@ export default class TaskEdit extends React.Component {
   }
 
   render () {
-    console.log(this.state)
     return (
       <tr>
         <Modal isOpen={this.state.modal} toggle={this.toggleModal} >
@@ -128,7 +127,9 @@ export default class TaskEdit extends React.Component {
             </FormGroup>
           </Form>
         </td>
-        {this.state.error && <Error {...this.state.error} />}
+        <td>
+          {this.state.error && <Error {...this.state.error} />}
+        </td>
       </tr>
     )
   }

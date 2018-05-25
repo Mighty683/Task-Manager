@@ -9,7 +9,7 @@ import {
 
 const Error = (props) => {
   return (
-    <Card body inverse color='danger'>
+    <Card body inverse color='warning'>
       <CardBody>
         <CardTitle>Error Occured!</CardTitle>
         <CardText>{props.msg}</CardText>

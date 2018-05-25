@@ -1,4 +1,6 @@
 import request from 'request-promise'
+
+// Tasks API
 export const loadError = () => ({type: 'LOAD_ERROR'})
 export const editError = (id) => ({type: 'EDIT_ERROR', id})
 export const deleteError = (id) => ({type: 'DELETE_ERROR', id})
@@ -7,12 +9,15 @@ export const removeEditError = (id) => ({type: 'REMOVE_EDIT_ERROR', id})
 export const removeDeleteError = (id) => ({type: 'REMOVE_DELETE_ERROR', id})
 export const loadTasksSuccess = (tasks) => ({type: 'LOAD_TASKS', tasks})
 export const editTaskSuccess = (task) => ({type: 'EDIT_TASK', task})
-export const editTask = (data) => {
+export const editTask = (token, data) => {
   return (dispatch) => {
     return request({
       method: 'POST',
       uri: 'http://localhost:15432/edit',
-      body: data,
+      body: {
+        ...data,
+        token
+      },
       json: true
     }).then(
       (res) => {
@@ -24,12 +29,13 @@ export const editTask = (data) => {
       })
   }
 }
-export const deleteTask = id => {
+export const deleteTask = (token, id) => {
   return (dispatch) => {
     return request({
       method: 'POST',
       uri: 'http://localhost:15432/delete',
       body: {
+        token,
         id
       },
       json: true
@@ -43,13 +49,14 @@ export const deleteTask = id => {
       })
   }
 }
-export const addTask = (data) => {
+export const addTask = (token, data) => {
   return (dispatch) => {
     return request({
       method: 'POST',
       uri: 'http://localhost:15432/add',
       body: {
-        data
+        token,
+        ...data
       },
       json: true
     }).then(
@@ -62,12 +69,18 @@ export const addTask = (data) => {
       })
   }
 }
-export function loadTasks () {
+export function loadTasks (token) {
   return (dispatch) => {
-    return request.get('http://localhost:15432/get/all').then(
+    return request({
+      method: 'POST',
+      uri: 'http://localhost:15432/get/all',
+      body: {
+        token: token
+      },
+      json: true
+    }).then(
       (res) => {
-        let tasks = JSON.parse(res)
-        dispatch(loadTasksSuccess(tasks))
+        dispatch(loadTasksSuccess(res))
         dispatch(removeLoadError())
       })
       .catch((res) => {

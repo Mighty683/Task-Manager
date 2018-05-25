@@ -1,5 +1,6 @@
-function ServerController (DBCollection) {
+function TaskController (DBCollection) {
   this.DBCollection = DBCollection
+
   this.updateDoc = function (callback) {
     this.DBCollection.find({user: 'admin'}, (err, prevDoc) => {
       if (!err) {
@@ -33,7 +34,9 @@ function ServerController (DBCollection) {
     this.updateDoc(function (docContent) {
       let prevTasks = docContent.tasks
       let indexToRemove = prevTasks.findIndex((task) => task.id === req.body.id)
-      prevTasks.splice(indexToRemove, 1)
+      if (indexToRemove > 0) {
+        prevTasks.splice(indexToRemove, 1)
+      }
       this.DBCollection.update({user: 'admin'}, {
         user: 'admin',
         tasks: prevTasks
@@ -50,6 +53,8 @@ function ServerController (DBCollection) {
       if (!err) {
         doc.toArray((err, doc) => {
           if (!err) {
+            console.log('SENDING')
+            console.log(doc[0].tasks)
             res.send(doc[0].tasks)
           }
         })
@@ -74,4 +79,4 @@ function ServerController (DBCollection) {
   }
 }
 
-module.exports = ServerController
+module.exports = TaskController

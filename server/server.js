@@ -32,11 +32,6 @@ var initialState = {
 let dbInitializer = new DbInitializer()
 dbInitializer.on('db:init', (dbclient) => {
   console.log('Server Initialization')
-  dbclient.db('taskManager').collection('usersTasks', (err, collection) => {
-    if (err) {
-      throw err
-    }
-    ServerInitializer(collection)
-  })
+  ServerInitializer(dbclient)
 })
 dbInitializer.initDB(initialState)

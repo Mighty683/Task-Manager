@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
-import { Route, Switch } from 'react-router-dom'
-import { withRouter } from 'react-router'
+import { Route } from 'react-router-dom'
 import TaskListMainPage from '../TaskList/MainPage.js'
-import Welcome from './Welcome.js'
+import Login from './Login.js'
 import NavBar from './NavBar.js'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as UserActions from '../../actions/UserActions'
 
 class MainPage extends Component {
   constructor (props) {
@@ -14,48 +16,55 @@ class MainPage extends Component {
       ...props
     }
     this.handleContinue = this.handleContinue.bind(this)
-    this.handleDataChange = this.handleDataChange.bind(this)
+    this.handleAdminPanel = this.handleAdminPanel.bind(this)
   }
 
   handleContinue () {
     this.props.history.push('/tasks')
   }
 
-  handleDataChange (preparedData) {
-    this.setState({
-      ...preparedData
-    })
+  handleAdminPanel (preparedData) {
     this.props.history.push('/adminpanel')
   }
 
   render () {
     return (
-      <AlertProvider template={AlertTemplate} {... {
-        position: 'bottom center',
-        timeout: 3000,
-        transtition: 'scale',
-        offset: '30px'
-      }}>
-        <div className='main container text-center'>
-          <header>
-            <h1>Task-Manager</h1>
-            <NavBar />
-          </header>
-          <Switch>
-            <Route exact path='/' render={() => (
-              <Welcome handleContinue={this.handleContinue} />
-            )} />
-            <Route path='/tasks' render={() => (
-              <TaskListMainPage {...this.state} />
-            )} />
-            <Route path='/adminpanel' render={() => (
-              <div>TO DO</div>
-            )} />
-          </Switch>
-          <footer className='text-muted'>Made by Tomasz Szarek 2018</footer>
-        </div>
-      </AlertProvider>)
+      <div className='main container text-center'>
+        <header>
+          <h1>Task-Manager</h1>
+          <NavBar {...{goToTasks: this.handleContinue,
+            goToAdminPanel: this.handleAdminPanel,
+            logout: this.state.actions.logout.bind(this, this.props.user.token)}} />
+        </header>
+        <Route exact path='/' render={() => {
+          return this.props.user.token
+            ? <TaskListMainPage {...this.props} />
+            : <Login {...{...this.props}} />
+        }} />
+        <Route path='/tasks' render={() => (
+          <TaskListMainPage {...this.state} />
+        )} />
+        <Route path='/adminpanel' render={() => (
+          <div>TO DO</div>
+        )} />
+        <AlertProvider template={AlertTemplate} {... {
+          position: 'bottom center',
+          timeout: 3000,
+          transtition: 'scale',
+          offset: '30px'
+        }} />
+        <footer className='text-muted'>Made by Tomasz Szarek 2018</footer>
+      </div>
+    )
   }
 }
 
-export default withRouter(MainPage)
+const mapStateToProps = state => ({user: state.user})
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({...UserActions}, dispatch)
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainPage)

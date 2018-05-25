@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router'
+import { connect } from 'react-redux'
 import { Navbar,
   NavbarBrand,
   Collapse,
@@ -11,11 +11,9 @@ import { Navbar,
 class NavBar extends Component {
   constructor (props) {
     super(props)
-
+    this.state = {...props}
     this.toggle = this.toggle.bind(this)
-    this.state = {
-      isOpen: false
-    }
+    this.state.isOpen = false
   }
 
   toggle () {
@@ -31,23 +29,17 @@ class NavBar extends Component {
           <NavbarBrand href='/'>Welcome</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className='ml-auto' navbar>
+            { this.props.user.token && <Nav className='ml-auto' navbar>
               <NavItem>
-                <NavLink onClick={() => {
-                  this.props.history.push('/')
-                }}>Welcome Page</NavLink>
+                <NavLink onClick={this.state.goToTasks}>Tasks</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={() => {
-                  this.props.history.push('/tasks')
-                }}>Tasks</NavLink>
+                <NavLink onClick={this.state.goToAdminPanel}>Admin Panel</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={() => {
-                  this.props.history.push('/adminpanel')
-                }}>Admin Panel</NavLink>
+                <NavLink onClick={this.state.logout}>Logout</NavLink>
               </NavItem>
-            </Nav>
+            </Nav>}
           </Collapse>
         </Navbar>
       </div>
@@ -55,4 +47,8 @@ class NavBar extends Component {
   }
 }
 
-export default withRouter(NavBar)
+const mapStateToProps = state => ({user: state.user})
+
+export default connect(
+  mapStateToProps
+)(NavBar)

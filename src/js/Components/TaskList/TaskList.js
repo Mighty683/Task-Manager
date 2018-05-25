@@ -16,7 +16,7 @@ const TaskList = (props) => {
         </thead>
         <tbody>
           {props.tasks && props.tasks.map(function (task) {
-            return <Task key={task.id} {... {data: task, actions: props.actions, errors: props.errors}} />
+            return <Task key={task.id} {... {data: task, actions: props.actions, errors: props.errors, user: props.user}} />
           })}
         </tbody>
       </table>
