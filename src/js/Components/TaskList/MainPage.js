@@ -15,7 +15,7 @@ class TaskListMainPage extends React.Component {
   }
   render () {
     return (
-      <div className='main-page mh-s'>
+      <div className='task-list-container mh-s'>
         {
           this.props.tasks || this.props.errors ? <TaskList {...this.props} /> : null
         }

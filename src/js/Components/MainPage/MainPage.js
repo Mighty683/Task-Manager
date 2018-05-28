@@ -29,7 +29,7 @@ class MainPage extends Component {
 
   render () {
     return (
-      <div className='main container text-center'>
+      <div className='main-container text-center'>
         <header>
           <h1>Task-Manager</h1>
           <NavBar {...{goToTasks: this.handleContinue,

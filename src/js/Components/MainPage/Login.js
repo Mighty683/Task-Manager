@@ -11,6 +11,7 @@ import { Button,
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as UserActions from '../../actions/UserActions'
+import hashFun from '../../helpers/hashFun'
 
 class Login extends React.Component {
   constructor (props) {
@@ -22,7 +23,7 @@ class Login extends React.Component {
   }
   handleSubmit (e) {
     e.preventDefault()
-    this.state.actions.login(this.state.user.login, this.state.user.pass)
+    this.state.actions.login(this.state.user.login, hashFun(this.state.user.pass))
   }
 
   toggleModal (e) {
@@ -41,7 +42,7 @@ class Login extends React.Component {
   }
 
   render () {
-    return <div className='welcome card text-center'>
+    return <div className='login-container text-center'>
       <Modal isOpen={this.state.errors.login instanceof Object} toggle={this.toggleModal} >
         <ModalHeader toggle={this.toggleModal}>Login Failed</ModalHeader>
         <ModalBody>{this.state.errors.login && this.state.errors.login.msg}</ModalBody>

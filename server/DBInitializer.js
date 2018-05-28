@@ -1,6 +1,7 @@
 const MongoClient = require('mongodb').MongoClient
 const util = require('util')
 const EventEmitter = require('events').EventEmitter
+const hashFun = require('./helpers/hashFun.js')
 
 function DBController () {
   this.initDB = function (initialState) {
@@ -8,7 +9,7 @@ function DBController () {
       this.on('collection:users:set', collection => {
         let defaultUser = {
           user: 'admin',
-          password: 'admin'
+          password: hashFun('admin')
         }
         this.on(`DB:user:${defaultUser.user}:doc:created`, function (docConnection) {
           this.emit('db:init', client)
