@@ -20,7 +20,7 @@
   },
   "scripts": {
     "lint": "standard",
-    "server": "node ./server/server.js",
+    "server": "nodemon ./server/server.js",
     "build": "node  node_modules/webpack/bin/webpack --progress --profile --config webpack.config.js --mode production",
     "build:analyze": "node  node_modules/webpack/bin/webpack --progress --profile --config webpack.config.js --mode production --env.analyze",
     "start": "node node_modules/webpack-dev-server/bin/webpack-dev-server --hot --inline --progress --profile --config webpack.config.js --mode development"
@@ -40,6 +40,7 @@
     "html-webpack-plugin": "^3.2.0",
     "mongodb": "^3.1.0-beta4",
     "node-sass": "^4.9.0",
+    "nodemon": "^1.17.5",
     "path": "^0.12.7",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

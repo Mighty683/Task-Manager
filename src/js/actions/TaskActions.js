@@ -21,7 +21,7 @@ export const editTask = (token, data) => {
       responseType: 'json'
     }).then(
       (res) => {
-        dispatch(editTaskSuccess(res))
+        dispatch(editTaskSuccess(res.data))
         dispatch(removeEditError(data.id))
       })
       .catch((res) => {

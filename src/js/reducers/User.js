@@ -1,6 +1,6 @@
 export default function Errors (state = {
   login: '',
-  pass: ''
+  token: ''
 }, action) {
   switch (action.type) {
     case 'USER_LOGIN':
@@ -10,6 +10,11 @@ export default function Errors (state = {
         time: new Date().getTime()
       }
     case 'USER_LOGOUT':
+      return {
+        login: '',
+        token: '',
+        time: new Date().getTime()
+      }
     default:
       return state
   }

@@ -1,19 +1,19 @@
 export default function Tasks (state = [], action) {
   switch (action.type) {
     case 'EDIT_TASK':
-      return [...state.tasks.map(function (task) {
+      return [...state.map(function (task) {
         return task.id === action.task.id
           ? action.task : task
       })
       ]
     case 'DELETE_ITEM':
       return [
-        ...state.tasks.filter(task => task.id !== action.id)
+        ...state.filter(task => task.id !== action.id)
       ]
     case 'ADD_TASK':
-      let newId = state.tasks.reduce((maxId, task) => Math.max(task.id, maxId), -1) + 1
+      let newId = state.reduce((maxId, task) => Math.max(task.id, maxId), -1) + 1
       return [
-        ...state.tasks,
+        ...state,
         Object.assign({}, {
           id: newId,
           name: 'ID' + newId

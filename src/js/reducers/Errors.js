@@ -46,11 +46,11 @@ export default function Errors (state = { errors: {} }, error) {
       return returnWrap({errors})
     case 'REMOVE_EDIT_ERROR':
       errors = state.errors
-      delete errors.loaderrors[`task_${error.id}`]
+      delete errors[`task_${error.id}`]
       return returnWrap({errors})
     case 'REMOVE_DELETE_ERROR':
       errors = state.errors
-      delete errors.loaderrors[`task_${error.id}`]
+      delete errors[`task_${error.id}`]
       return returnWrap({errors})
     default:
       return state

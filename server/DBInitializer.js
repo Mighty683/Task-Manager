@@ -1,28 +1,29 @@
 const MongoClient = require('mongodb').MongoClient
 const util = require('util')
 const EventEmitter = require('events').EventEmitter
-const hashFun = require('./helpers/hashFun.js')
 
 function DBController () {
   this.initDB = function (initialState) {
     this.on('db:connected', (client) => {
       this.on('collection:users:set', collection => {
-        let defaultUser = {
-          user: 'admin',
-          password: hashFun('admin')
-        }
-        this.on(`DB:user:${defaultUser.user}:doc:created`, function (docConnection) {
-          this.emit('db:init', client)
+        initialState.forEach(user => {
+          let defaultUser = {
+            user: user.user,
+            password: user.pass
+          }
+          this.checkAndCreateDoc(collection, defaultUser, { user: defaultUser.user }, `user:${defaultUser.user}`)
         })
-        this.checkAndCreateDoc(collection, defaultUser, { user: defaultUser.user }, `user:${defaultUser.user}`)
       })
       this.on('collection:usersTasks:set', (collection) => {
-        this.on(`DB:taskList:${initialState.user}:doc:created`, function (docConnection) {
-          this.createCollection(client.db('taskManager'), 'users')
+        initialState.forEach(user => {
+          this.on(`DB:taskList:${user.user}:doc:created`, function (docConnection) {
+            this.createCollection(client.db('taskManager'), 'users')
+          })
+          this.checkAndCreateDoc(collection, user, { user: user.user }, `taskList:${user.user}`)
         })
-        this.checkAndCreateDoc(collection, initialState, { user: initialState.user }, `taskList:${initialState.user}`)
       })
       this.createCollection(client.db('taskManager'), 'usersTasks')
+      this.emit('db:init', client)
     })
     this.connectDB()
   }

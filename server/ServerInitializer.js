@@ -18,7 +18,6 @@ function InitializeServer (DBClient) {
       if (!err) {
         collection.find({token: req.body.token}, (err, doc) => {
           if (!err) {
-            console.log('user:found')
             doc.toArray((err, data) => {
               if (!err && (data.length > 0)) {
                 callback(req, res)
@@ -50,16 +49,16 @@ function InitializeServer (DBClient) {
       app.post('/logout', Auth.bind(this, function (req, res) {
         userController.logout(req, res)
       }))
-      TaskControllerInit.call(this)
+      TaskControllerInit.call(this, collection)
     })
   }
-  function TaskControllerInit () {
-    DBClient.db('taskManager').collection('usersTasks', (err, collection) => {
+  function TaskControllerInit (UsersCollection) {
+    DBClient.db('taskManager').collection('usersTasks', (err, TasksCollection) => {
       if (err) {
         throw err
       }
       console.log('TaskControllerInit')
-      let taskController = new TaskController(collection)
+      let taskController = new TaskController(UsersCollection, TasksCollection)
       app.post('/add', Auth.bind(this, function (req, res) {
         taskController.add(req, res)
       }))

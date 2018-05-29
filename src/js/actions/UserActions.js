@@ -13,7 +13,6 @@ export const login = (login, pass) => {
       responseType: 'json'
     }).then(
       (res) => {
-        console.log(res)
         dispatch(loginSuccess(login, res.data.token))
         dispatch(removeLoginError())
       })
@@ -22,13 +21,14 @@ export const login = (login, pass) => {
       })
   }
 }
-export const logout = (token) => {
+export const logout = (token, login) => {
   return (dispatch) => {
     return axios({
       method: 'post',
       url: 'http://localhost:15432/logout',
       data: {
-        token
+        token,
+        login: login
       },
       responseType: 'json'
     }).then(

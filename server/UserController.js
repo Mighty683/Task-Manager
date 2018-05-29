@@ -1,10 +1,10 @@
 const crypto = require('crypto')
 
-function UserController (DBCollection) {
-  this.DBCollection = DBCollection
+function UserController (UsersCollection) {
+  this.UsersCollection = UsersCollection
 
-  this.updateDoc = function (user, callback) {
-    this.DBCollection.find({user: user}, (err, prevDoc) => {
+  this.updateDoc = function (query, callback) {
+    this.UsersCollection.find(query, (err, prevDoc) => {
       if (!err) {
         prevDoc.toArray((err, docContent) => {
           if (!err && docContent.length > 0) {
@@ -19,11 +19,10 @@ function UserController (DBCollection) {
     })
   }
 
-  this.login = function (req, res) {
+  this.updateToken = function (req, res, newToken) {
     let user = req.body.login
     let password = req.body.pass
-    console.log(`login:${user}:user`)
-    this.updateDoc(user, function (data) {
+    this.updateDoc({user: user}, function (data) {
       if (data && (password === data.password)) {
         let dbToken = data.token
         if (data.token) {
@@ -31,8 +30,7 @@ function UserController (DBCollection) {
             token: dbToken
           })
         } else {
-          let newToken = crypto.randomBytes(20).toString('hex')
-          this.DBCollection.update({user: user}, {
+          this.UsersCollection.update({user: user}, {
             user: data.user,
             password: data.password,
             token: newToken
@@ -52,10 +50,33 @@ function UserController (DBCollection) {
     }.bind(this))
   }
 
+  this.removeToken = function (req, res) {
+    let token = req.body.token
+    this.updateDoc({token: token}, function (data) {
+      if (data) {
+        this.UsersCollection.update({token: token}, {
+          user: data.user,
+          password: data.password,
+          token: ''
+        }, (err, newDoc) => {
+          if (!err) {
+            res.sendStatus(200)
+          } else {
+            throw err
+          }
+        })
+      }
+    }.bind(this))
+  }
+
+  this.login = function (req, res) {
+    console.log(`login:${req.body.login}:user`)
+    this.updateToken(req, res, crypto.randomBytes(20).toString('hex'))
+  }
+
   this.logout = function (req, res) {
-    // TODO
-    console.log(`delete:${req.body.id}`)
-    res.send(401)
+    console.log(`logout:${req.body.login}:user`)
+    this.removeToken(req, res)
   }
 }
 module.exports = UserController

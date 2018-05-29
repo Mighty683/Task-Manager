@@ -17,6 +17,11 @@ class MainPage extends Component {
     }
     this.handleContinue = this.handleContinue.bind(this)
     this.handleAdminPanel = this.handleAdminPanel.bind(this)
+    this.logout = this.logout.bind(this)
+  }
+
+  logout () {
+    this.state.actions.logout(this.props.user.token)
   }
 
   handleContinue () {
@@ -34,7 +39,7 @@ class MainPage extends Component {
           <h1>Task-Manager</h1>
           <NavBar {...{goToTasks: this.handleContinue,
             goToAdminPanel: this.handleAdminPanel,
-            logout: this.state.actions.logout.bind(this, this.props.user.token)}} />
+            logout: this.logout}} />
         </header>
         <Route exact path='/' render={() => {
           return this.props.user.token
