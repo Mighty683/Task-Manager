@@ -1,4 +1,4 @@
-import request from 'request-promise'
+import axios from 'axios'
 
 // Tasks API
 export const loadError = () => ({type: 'LOAD_ERROR'})
@@ -11,14 +11,14 @@ export const loadTasksSuccess = (tasks) => ({type: 'LOAD_TASKS', tasks})
 export const editTaskSuccess = (task) => ({type: 'EDIT_TASK', task})
 export const editTask = (token, data) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/edit',
-      body: {
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/edit',
+      data: {
         ...data,
         token
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res) => {
         dispatch(editTaskSuccess(res))
@@ -31,17 +31,17 @@ export const editTask = (token, data) => {
 }
 export const deleteTask = (token, id) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/delete',
-      body: {
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/delete',
+      data: {
         token,
         id
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res) => {
-        dispatch(loadTasksSuccess(res))
+        dispatch(loadTasksSuccess(res.data))
         dispatch(removeDeleteError(id))
       })
       .catch((res) => {
@@ -51,17 +51,17 @@ export const deleteTask = (token, id) => {
 }
 export const addTask = (token, data) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/add',
-      body: {
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/add',
+      data: {
         token,
         ...data
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res) => {
-        dispatch(loadTasksSuccess(res))
+        dispatch(loadTasksSuccess(res.data))
         dispatch(removeLoadError())
       })
       .catch((res) => {
@@ -71,16 +71,16 @@ export const addTask = (token, data) => {
 }
 export function loadTasks (token) {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/get/all',
-      body: {
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/get/all',
+      data: {
         token: token
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res) => {
-        dispatch(loadTasksSuccess(res))
+        dispatch(loadTasksSuccess(res.data))
         dispatch(removeLoadError())
       })
       .catch((res) => {

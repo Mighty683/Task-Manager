@@ -1,19 +1,20 @@
-import request from 'request-promise'
+import axios from 'axios'
 
 // User API
 export const login = (login, pass) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/login',
-      body: {
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/login',
+      data: {
         login,
         pass
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res) => {
-        dispatch(loginSuccess(login, res.token))
+        console.log(res)
+        dispatch(loginSuccess(login, res.data.token))
         dispatch(removeLoginError())
       })
       .catch((res) => {
@@ -23,13 +24,13 @@ export const login = (login, pass) => {
 }
 export const logout = (token) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/logout',
-      body: {
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/logout',
+      data: {
         token
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res, err) => {
         dispatch(logoutSuccess(login))

@@ -14,6 +14,15 @@ if (analyze) {
 }
 
 module.exports = {
+  entry: {
+    index: './src/index.js'
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
 
   module: {
     rules: [
