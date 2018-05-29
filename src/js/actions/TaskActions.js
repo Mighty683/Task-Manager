@@ -1,4 +1,6 @@
-import request from 'request-promise'
+import axios from 'axios'
+
+// Tasks API
 export const loadError = () => ({type: 'LOAD_ERROR'})
 export const editError = (id) => ({type: 'EDIT_ERROR', id})
 export const deleteError = (id) => ({type: 'DELETE_ERROR', id})
@@ -7,16 +9,19 @@ export const removeEditError = (id) => ({type: 'REMOVE_EDIT_ERROR', id})
 export const removeDeleteError = (id) => ({type: 'REMOVE_DELETE_ERROR', id})
 export const loadTasksSuccess = (tasks) => ({type: 'LOAD_TASKS', tasks})
 export const editTaskSuccess = (task) => ({type: 'EDIT_TASK', task})
-export const editTask = (data) => {
+export const editTask = (token, data) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/edit',
-      body: data,
-      json: true
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/edit',
+      data: {
+        ...data,
+        token
+      },
+      responseType: 'json'
     }).then(
       (res) => {
-        dispatch(editTaskSuccess(res))
+        dispatch(editTaskSuccess(res.data))
         dispatch(removeEditError(data.id))
       })
       .catch((res) => {
@@ -24,18 +29,19 @@ export const editTask = (data) => {
       })
   }
 }
-export const deleteTask = id => {
+export const deleteTask = (token, id) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/delete',
-      body: {
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/delete',
+      data: {
+        token,
         id
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res) => {
-        dispatch(loadTasksSuccess(res))
+        dispatch(loadTasksSuccess(res.data))
         dispatch(removeDeleteError(id))
       })
       .catch((res) => {
@@ -43,18 +49,19 @@ export const deleteTask = id => {
       })
   }
 }
-export const addTask = (data) => {
+export const addTask = (token, data) => {
   return (dispatch) => {
-    return request({
-      method: 'POST',
-      uri: 'http://localhost:15432/add',
-      body: {
-        data
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/add',
+      data: {
+        token,
+        ...data
       },
-      json: true
+      responseType: 'json'
     }).then(
       (res) => {
-        dispatch(loadTasksSuccess(res))
+        dispatch(loadTasksSuccess(res.data))
         dispatch(removeLoadError())
       })
       .catch((res) => {
@@ -62,12 +69,18 @@ export const addTask = (data) => {
       })
   }
 }
-export function loadTasks () {
+export function loadTasks (token) {
   return (dispatch) => {
-    return request.get('http://localhost:15432/get/all').then(
+    return axios({
+      method: 'post',
+      url: 'http://localhost:15432/get/all',
+      data: {
+        token: token
+      },
+      responseType: 'json'
+    }).then(
       (res) => {
-        let tasks = JSON.parse(res)
-        dispatch(loadTasksSuccess(tasks))
+        dispatch(loadTasksSuccess(res.data))
         dispatch(removeLoadError())
       })
       .catch((res) => {

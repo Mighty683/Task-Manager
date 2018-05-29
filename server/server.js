@@ -1,9 +1,11 @@
 const DbInitializer = require('./DBInitializer.js')
 const ServerInitializer = require('./ServerInitializer.js')
+const hashFun = require('./helpers/hashFun.js')
 
 var today = new Date()
-var initialState = {
+var initialState = [{
   user: 'admin',
+  pass: hashFun('admin'),
   tasks: [{
     id: 1,
     name: 'Task 1',
@@ -28,15 +30,22 @@ var initialState = {
     done: false,
     when: new Date(today.getTime() + 1000000)
   }
-  ]}
+  ]},
+{
+  user: 'user',
+  pass: hashFun('user'),
+  tasks: [{
+    id: 1,
+    name: 'Task 1',
+    desc: 'Description',
+    where: 'Place',
+    done: true,
+    when: new Date(today.getTime() - 1000000)
+  }
+  ]}]
 let dbInitializer = new DbInitializer()
 dbInitializer.on('db:init', (dbclient) => {
   console.log('Server Initialization')
-  dbclient.db('taskManager').collection('usersTasks', (err, collection) => {
-    if (err) {
-      throw err
-    }
-    ServerInitializer(collection)
-  })
+  ServerInitializer(dbclient)
 })
 dbInitializer.initDB(initialState)

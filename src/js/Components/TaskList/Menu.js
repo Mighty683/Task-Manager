@@ -10,12 +10,12 @@ export default class Menu extends React.Component {
 
   handleUpdate (e) {
     e.preventDefault()
-    this.state.loadTasks()
+    this.state.loadTasks(this.state.user.token)
   }
 
   handleAdd (e) {
     e.preventDefault()
-    this.state.addTask()
+    this.state.addTask(this.state.user.token)
   }
 
   render () {

@@ -15,12 +15,12 @@ export default class Task extends React.Component {
   }
 
   onEdit (data) {
-    this.state.actions.editTask(data)
+    this.state.actions.editTask(this.state.user.token, data)
     this.onClick()
   }
 
   onDelete (id) {
-    this.state.actions.deleteTask(id)
+    this.state.actions.deleteTask(this.state.user.token, id)
   }
 
   onClick (e) {

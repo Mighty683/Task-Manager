@@ -1,12 +1,28 @@
 const path = require('path')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
-
+const minimist = require('minimist')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
   filename: './index.html'
 })
+let env = minimist(process.argv.slice(2)).env
+let analyze = env && env.analyze
+let plugins = [htmlPlugin]
+if (analyze) {
+  plugins.push(new BundleAnalyzerPlugin())
+}
 
 module.exports = {
+  entry: {
+    index: './src/index.js'
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'all'
+    }
+  },
 
   module: {
     rules: [
@@ -38,8 +54,9 @@ module.exports = {
     net: 'empty',
     tls: 'empty'
   },
-  plugins: [htmlPlugin],
+  plugins: plugins,
   devServer: {
+    historyApiFallback: true,
     contentBase: path.resolve('build'),
     hot: true
   }
