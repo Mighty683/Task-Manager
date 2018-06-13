@@ -16,13 +16,11 @@ function DBController () {
       })
       this.on('collection:usersTasks:set', (collection) => {
         initialState.forEach(user => {
-          this.on(`DB:taskList:${user.user}:doc:created`, function (docConnection) {
-            this.createCollection(client.db('taskManager'), 'users')
-          })
           this.checkAndCreateDoc(collection, user, { user: user.user }, `taskList:${user.user}`)
         })
       })
       this.createCollection(client.db('taskManager'), 'usersTasks')
+      this.createCollection(client.db('taskManager'), 'users')
       this.emit('db:init', client)
     })
     this.connectDB()
@@ -64,13 +62,15 @@ function DBController () {
         if (!collection) {
           db.createCollection(name, (err, res) => {
             if (!err) {
-              this.emit('collection:set', res)
-              console.log('Collection channels created!')
+              this.emit(`collection:${name}:set`, res)
+              console.log(`Collection ${name} created!`)
+            } else {
+              console.log(err)
             }
           })
         } else {
           this.emit(`collection:${name}:set`, collection)
-          console.log('Collection already exists!')
+          console.log(`Collection ${name} exists!`)
         }
       } else {
         console.log(err)
